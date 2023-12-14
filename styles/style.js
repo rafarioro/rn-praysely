@@ -17,11 +17,11 @@ export const Header = styled.View`
 `;
 export const ThemeButton = styled.Pressable`
     padding: 10px;
-    border: 1px solid ${(props) => props.theme['BUTTON_COLOR']};
+    border: 1px solid ${(props) => props.theme['btnBgColor']};
 `;
 export const ThemeButtonText = styled.Text`
     font-size: 16px;
-    color: ${(props) => props.theme['BUTTON_COLOR']};
+    color: ${(props) => props.theme['btnFontColor']};
 `;
 export const TitleText = styled.Text`
     font-weight: 600;

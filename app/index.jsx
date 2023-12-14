@@ -3,7 +3,7 @@ import { Text, View  } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux';
 import { Pressable } from 'react-native'; 
 import { setColorTheme } from '../redux/features/auth/userSlice';
-import { ThemeButtonText, Container } from '../styles/style'; 
+import { ThemeButtonText, Container, ThemeButton } from '../styles/style'; 
 
 export default function Page() {
 
@@ -12,15 +12,11 @@ export default function Page() {
 
     return ( 
       <Container>
-        <ThemeButtonText >
-           ddfa
-        </ThemeButtonText>
-
-        <Pressable 
+        <ThemeButton 
           onPress={() => dispatch(setColorTheme(colorScheme === 'dark' ? 'light' : 'dark'))}
           >
-          <Text>Press me</Text>
-        </Pressable> 
+          <ThemeButtonText>Press me</ThemeButtonText>
+        </ThemeButton> 
       </Container>
     )
 }
