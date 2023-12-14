@@ -17,3 +17,7 @@ export default {
     tabIconSelected: tintColorDark,
   },
 };
+
+
+
+// https://stackoverflow.com/questions/73713606/how-can-i-change-app-theme-with-react-native-appearance-and-usecolorscheme

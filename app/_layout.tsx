@@ -1,22 +1,17 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+// import { DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { darkTheme, lightTheme } from '../styles/theme';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { Provider } from 'react-redux';
+import { store } from '../redux/store'; 
+import { useSelector } from 'react-redux';
+import { ThemeProvider } from 'styled-components/native';
+export { ErrorBoundary} from 'expo-router'; // Catch any errors thrown by the Layout component.
+export const unstable_settings = { initialRouteName: '(tabs)', };// Ensure that reloading on `/modal` keeps a back button present.
+SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding before asset loading is complete.
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -25,32 +20,32 @@ export default function RootLayout() {
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+  useEffect(() => { if (error) throw error; }, [error]);
+  useEffect(() => { if (loaded) { SplashScreen.hideAsync(); } }, [loaded]);
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+  if (!loaded) { return null; }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <Provider store={store}> 
+      <RootLayoutNav />
+    </Provider>
+  );
+}
+
+function RootLayoutNav() { 
+
+  // const colorScheme = useColorScheme();
+  const { colorScheme } = useSelector((state: any) => state.users);
+
+  return (
+    <Provider store={store}> 
+        <ThemeProvider theme={colorScheme === 'light' ? lightTheme : darkTheme}>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+            {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
+          </Stack>
+        </ThemeProvider>
+    </Provider>
   );
 }
