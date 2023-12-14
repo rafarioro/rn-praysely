@@ -12,6 +12,9 @@ export default function Page() {
 
     return ( 
       <Container>
+
+        
+
         <ThemeButton 
           onPress={() => dispatch(setColorTheme(colorScheme === 'dark' ? 'light' : 'dark'))}
           >
