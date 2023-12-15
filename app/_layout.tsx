@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
-
+import { Redirect } from 'expo-router';
 import store from '../redux/store'; 
 
 import { useSelector } from 'react-redux';
@@ -42,7 +42,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() { 
  
-  const { colorScheme } = useSelector((state: any) => state.users);
+  const { colorScheme, userData } = useSelector((state: any) => state.users);
 
   return (
     <Provider store={store}> 
@@ -50,12 +50,14 @@ function RootLayoutNav() {
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="section/Login" options={{ headerShown: false }} />
+            <Stack.Screen name="section/Home" options={{ headerShown: false }} />
 
-
-            {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-            {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
           </Stack>
         </ThemeProvider>
     </Provider>
   );
 }
+
+
+{/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+{/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
