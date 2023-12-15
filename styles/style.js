@@ -8,7 +8,21 @@ export const Container = styled.SafeAreaView`
     padding: 20px; 
 `;
 
+export const MainHeader = styled.View`
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 2;
+    padding: 20px;
+    padding-top: ${(props) => `${props.paddingTop+20}px` || '20px'};
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: fit-content;
+    background-color: ${(props) => props.theme['PRIMARY_COLOR']};
 
+`
 
 export const Header = styled.View`
     display: flex;
@@ -18,6 +32,20 @@ export const Header = styled.View`
     align-items: center;
     padding: 20px;
 `;
+
+export const HeaderImageWrap = styled.View`
+    width: 35px;
+    height: 35px;
+    border-radius: 35px;
+    background-color: white;
+`;
+
+export const HeaderImage = styled.Image`
+    width: 100%;
+    height: 100%;
+    border-radius: 35px;
+`;
+
 export const ThemeButton = styled.Pressable`
     padding: 10px;
     border: 1px solid ${(props) => props.theme['btnBgColor']};
@@ -31,6 +59,12 @@ export const TitleText = styled.Text`
     font-size: ${(props) => props.fontSize || '18px'};
     color: ${(props) => props.theme['TITLE_COLOR']};
 `;
+export const ContentText = styled.Text`
+    font-weight: 500;
+    font-size: ${(props) => props.fontSize || '15px'};
+    color: ${(props) => props.theme['TITLE_COLOR']};
+`;
+
 export const PostContainer = styled.View`
     padding: 10px 20px;
     width: 100%;
