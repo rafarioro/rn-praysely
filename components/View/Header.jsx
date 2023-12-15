@@ -1,29 +1,44 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { HeaderImageWrap, MainHeader, TitleText, HeaderImage } from '../../styles/style'
-import { useSelector } from 'react-redux'
-import { StatusBar } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux' 
 import Constants from "expo-constants";
 import { baseUrl } from '../../assets/constants';
+import { setViewMenuBar } from '../../redux/features/app/appSlice';
+import { Redirect } from 'expo-router';
+
+import { router } from 'expo-router';
+
 export default function Header({section}) {
 
     const { userData } = useSelector(state => state.users);
+    const { viewMenuBar } = useSelector(state => state.app);
+    const dispatch = useDispatch();
+
+    // if(viewMenuBar) {
+    //     return (
+    //         <Redirect href="/modal" />
+    //     )
+        
+    // }
 
     return (
         <MainHeader
             paddingTop={Constants.statusBarHeight}  
             >
-            <HeaderImageWrap>
+            <HeaderImageWrap
+                onPress={() => router.replace('/modal')}
+                >
                 <HeaderImage
                     resizeMode="contain"
                     width={35}
                     height={35}
                     source={{
-                        uri: baseUrl + '/profile/2023-12-03T17-31-26.616Z-Screenshot%202023-12-03%20093058.png',
+                        uri: baseUrl + '/profile/' + userData.imagePath,
                       }} />
 
             </HeaderImageWrap>
-            <TitleText>Praysely</TitleText> 
+            <TitleText>{section ? section : 'Praysely'}</TitleText> 
         </MainHeader>
     )
 }

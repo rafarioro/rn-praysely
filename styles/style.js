@@ -33,17 +33,20 @@ export const Header = styled.View`
     padding: 20px;
 `;
 
-export const HeaderImageWrap = styled.View`
-    width: 35px;
-    height: 35px;
-    border-radius: 35px;
-    background-color: white;
+export const HeaderImageWrap = styled.Pressable`
+    width: 45px;
+    height: 45px;
+    border-radius: 45px;
+    background-color: transparent;
+    padding: 3px;
+    border: 2px solid ${(props) => props.theme['TITLE_COLOR']};
+
 `;
 
 export const HeaderImage = styled.Image`
     width: 100%;
     height: 100%;
-    border-radius: 35px;
+    border-radius: 45px;
 `;
 
 export const ThemeButton = styled.Pressable`

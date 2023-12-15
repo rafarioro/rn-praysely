@@ -1,19 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
+import { Container, ThemeButtonText } from '../styles/style' 
+import { useDispatch } from 'react-redux';
+import { setViewMenuBar } from '../redux/features/app/appSlice';
+import { useEffect, useState } from 'react';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+
+
 
 export default function ModalScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/modal.tsx" />
 
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </View>
+  const [ isPresented, setIsPresented ] = useState(false)
+
+  useEffect(() => { 
+    if(router.canGoBack()){
+      setIsPresented(true)
+    }
+  } , [])
+
+  const dispatch= useDispatch()
+
+  return (
+    <Container>
+      <Pressable onPress={() => {
+
+        // dispatch(setViewMenuBar(false))
+
+        if(isPresented){
+          router.replace('../')
+        }
+        
+      }}
+        >
+          <ThemeButtonText>Go Back</ThemeButtonText>
+      </Pressable>
+
+    
+
+    </Container>
   );
 }
 

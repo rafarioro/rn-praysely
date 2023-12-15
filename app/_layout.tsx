@@ -6,8 +6,7 @@ import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
-import { Provider } from 'react-redux';
-import { Redirect } from 'expo-router';
+import { Provider } from 'react-redux'; 
 import store from '../redux/store'; 
 
 import { useSelector } from 'react-redux';
@@ -49,9 +48,11 @@ function RootLayoutNav() {
         <ThemeProvider theme={colorScheme === 'light' ? lightTheme : darkTheme}>
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
+
             <Stack.Screen name="section/Login" options={{ headerShown: false }} />
             <Stack.Screen name="section/Home" options={{ headerShown: false }} />
 
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> 
           </Stack>
         </ThemeProvider>
     </Provider>
@@ -59,5 +60,3 @@ function RootLayoutNav() {
 }
 
 
-{/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-{/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
