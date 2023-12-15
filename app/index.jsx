@@ -5,11 +5,17 @@ import { Pressable } from 'react-native';
 import { setColorTheme } from '../redux/features/auth/userSlice';
 import { LandingButton, StyledImage, ThemeButton, Landing, LandingViewTop, LandingViewBottom } from '../styles/style'; 
 import { router } from 'expo-router';
-
+import { Redirect } from 'expo-router';
 
 export default function Page() {
     const dispatch = useDispatch();
-    const {colorScheme} = useSelector(state => state.users);
+    const {colorScheme, userData} = useSelector(state => state.users);
+
+    if(userData) return (
+      <Redirect href="/section/Home" 
+        />
+    )
+
 
     return ( 
       <Landing>
@@ -33,5 +39,4 @@ export default function Page() {
       </Landing>
     )
 }
-
 
