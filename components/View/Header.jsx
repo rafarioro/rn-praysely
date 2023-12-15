@@ -19,9 +19,9 @@ export default function Header({section}) {
         return (
             <MenuModal />
         )
-        
     }
 
+    
     return (
         <MainHeader
             paddingTop={Constants.statusBarHeight}  

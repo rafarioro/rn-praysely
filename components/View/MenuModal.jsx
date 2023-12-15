@@ -23,8 +23,7 @@ export default function MenuModal() {
                 <ThemeButtonText>Close</ThemeButtonText>
             </Pressable>
             <Pressable 
-                style={{marginTop: 110}}
-
+                style={{marginTop: 110}} 
                 onPress={() => {
                     dispatch(setColorTheme(colorScheme === 'light' ? 'dark' : 'light'))
                 }}
