@@ -11,29 +11,16 @@ import { useEffect, useState } from 'react';
 
 export default function ModalScreen() {
 
-  const [ isPresented, setIsPresented ] = useState(false)
-
-  useEffect(() => { 
-    if(router.canGoBack()){
-      setIsPresented(true)
-    }
-  } , [])
 
   const dispatch= useDispatch()
 
   return (
     <Container>
       <Pressable onPress={() => {
-
-        // dispatch(setViewMenuBar(false))
-
-        if(isPresented){
-          router.replace('../')
-        }
-        
-      }}
+        dispatch(setViewMenuBar(false))
+        }}
         >
-          <ThemeButtonText>Go Back</ThemeButtonText>
+          <ThemeButtonText>Close</ThemeButtonText>
       </Pressable>
 
     

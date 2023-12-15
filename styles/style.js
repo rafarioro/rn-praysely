@@ -8,6 +8,7 @@ export const Container = styled.SafeAreaView`
     padding: 20px; 
 `;
 
+
 export const MainHeader = styled.View`
     position: absolute;
     width: 100%;

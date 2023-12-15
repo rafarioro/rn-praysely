@@ -6,7 +6,7 @@ import Constants from "expo-constants";
 import { baseUrl } from '../../assets/constants';
 import { setViewMenuBar } from '../../redux/features/app/appSlice';
 import { Redirect } from 'expo-router';
-
+import MenuModal from '../View/MenuModal';
 import { router } from 'expo-router';
 
 export default function Header({section}) {
@@ -15,19 +15,19 @@ export default function Header({section}) {
     const { viewMenuBar } = useSelector(state => state.app);
     const dispatch = useDispatch();
 
-    // if(viewMenuBar) {
-    //     return (
-    //         <Redirect href="/modal" />
-    //     )
+    if(viewMenuBar) {
+        return (
+            <MenuModal />
+        )
         
-    // }
+    }
 
     return (
         <MainHeader
             paddingTop={Constants.statusBarHeight}  
             >
             <HeaderImageWrap
-                onPress={() => router.replace('/modal')}
+                onPress={() => dispatch(setViewMenuBar(true))}
                 >
                 <HeaderImage
                     resizeMode="contain"
