@@ -1,54 +1,46 @@
-import { createSlice } from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-  // get userdata from secure storage
-// const authDataStored = JSON.parse(await AsyncStorage.getItem('user'))
-// const colorTheme = await AsyncStorage.getItem('colorTheme');
-
-const storeData = async (value) => {
-  try {
-    await AsyncStorage.setItem('colorTheme', value);
-  } catch (e) {
-    console.log(e)
-  }
-};
-
-const getColorSchemeFromStorage = async () => {
-  try {
-    const value = await AsyncStorage.getItem('colorTheme');
-    if (value !== null) {
-      return 'light'
-    }else{
-      return value
-    }
-  } catch (e) {
-    return 'light'
-  }
-};
-
-let colorTheme = getColorSchemeFromStorage()
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
-  colorScheme: colorTheme ? colorTheme : 'light',
+  colorScheme: 'light',
+  userData: null,
   loading: false,
   success: false,
   loginLoading: false,
   loginSuccess: false, 
 }
 
-  
-  
+export const login = createAsyncThunk('users/login', async (userData) => {
+  const response = await axios.post('https://api.praysely.com/api/users/login', userData, {withCredentials: true})
+  return response.data
+});
+
   const usersSlice = createSlice({
     name: 'users',
-
     initialState, 
 
     reducers: {
       setColorTheme: (state, action) => {
-        state.colorScheme = action.payload
-        // await AsyncStorage.setItem('colorTheme', action.payload)
+        state.colorScheme = action.payload 
       },
     },
+    extraReducers: (builder) => {
+      builder
+        .addCase(login.pending, (state, action) => {
+          state.loginLoading = true;
+        })
+        .addCase(login.fulfilled, (state, action) => {
+          state.loginLoading = false;
+          state.loginSuccess = true;
+          state.userData = action.payload;
+        })
+        .addCase(login.rejected, (state, action) => {
+          state.loginLoading = false;
+          state.loginSuccess = false;
+          state.loginError = action.error.message;
+        })
+     
+    }
 
   });
  

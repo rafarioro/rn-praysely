@@ -5,13 +5,19 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
-import { store } from '../redux/store'; 
+
+import store from '../redux/store'; 
+
 import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 export { ErrorBoundary} from 'expo-router'; // Catch any errors thrown by the Layout component.
 export const unstable_settings = { initialRouteName: '(tabs)', };// Ensure that reloading on `/modal` keeps a back button present.
 SplashScreen.preventAutoHideAsync(); // Prevent the splash screen from auto-hiding before asset loading is complete.
+import { persistStore } from "redux-persist";
+
+let persistor = persistStore(store);
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -27,14 +33,15 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}> 
-      <RootLayoutNav />
+      <PersistGate loading={null} persistor={persistor}>
+        <RootLayoutNav />
+      </PersistGate> 
     </Provider>
   );
 }
 
 function RootLayoutNav() { 
-
-  // const colorScheme = useColorScheme();
+ 
   const { colorScheme } = useSelector((state: any) => state.users);
 
   return (
@@ -42,6 +49,9 @@ function RootLayoutNav() {
         <ThemeProvider theme={colorScheme === 'light' ? lightTheme : darkTheme}>
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="section/Login" options={{ headerShown: false }} />
+
+
             {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
             {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
           </Stack>
