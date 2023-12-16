@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, Modal } from 'react-native'
 import React from 'react'
 import { HeaderImageWrap, MainHeader, TitleText, HeaderImage } from '../../styles/style'
 import { useDispatch, useSelector } from 'react-redux' 
@@ -15,19 +15,23 @@ export default function Header({section}) {
     const { viewMenuBar } = useSelector(state => state.app);
     const dispatch = useDispatch();
 
-    if(viewMenuBar) {
-        return (
-            <MenuModal />
-        )
-    }
-
-    
     return (
         <MainHeader
             paddingTop={Constants.statusBarHeight}  
             >
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    presentationStyle='fullScreen'
+                    visible={viewMenuBar}
+                    onRequestClose={() => { 
+                        dispatch(setViewMenuBar(false));
+                    }}>
+                    <MenuModal />
+                </Modal>
             <HeaderImageWrap
                 onPress={() => dispatch(setViewMenuBar(true))}
+                // onPress={() => router.replace('/modal')}
                 >
                 <HeaderImage
                     resizeMode="contain"

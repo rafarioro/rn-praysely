@@ -52,7 +52,12 @@ function RootLayoutNav() {
             <Stack.Screen name="section/Login" options={{ headerShown: false }} />
             <Stack.Screen name="section/Home" options={{ headerShown: false }} />
 
-            <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> 
+            <Stack.Screen 
+              name="modal" 
+              options={{ 
+                presentation: 'modal',
+                animation: 'fade_from_bottom' 
+                 }} /> 
           </Stack>
         </ThemeProvider>
     </Provider>
