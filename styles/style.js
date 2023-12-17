@@ -10,13 +10,32 @@ export const Container = styled.SafeAreaView`
 
 export const MainMenuModalContainer = styled.SafeAreaView`
     background-color: ${(props) => props.theme['menuModalBg']};
+    display: flex;
     flex: 1;
-    align-items: center;
-    justify-content: center;
-    padding: 20px; 
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 60px 20px ;  
     width: 90%;
     border-radius: 0px 30px 30px 0px;
+    position: relative;
+`;
 
+export const HideModalButton = styled.Pressable`
+
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+
+
+`
+
+export const FlexColLeft = styled.View`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
 `;
 
 
