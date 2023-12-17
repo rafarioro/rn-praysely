@@ -5,8 +5,20 @@ export const Container = styled.SafeAreaView`
     flex: 1;
     align-items: center;
     justify-content: center;
-    padding: 20px; 
+    padding: 0px; 
 `;
+
+export const MainMenuModalContainer = styled.SafeAreaView`
+    background-color: ${(props) => props.theme['menuModalBg']};
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 20px; 
+    width: 90%;
+    border-radius: 0px 30px 30px 0px;
+
+`;
+
 
 
 export const MainHeader = styled.View`
@@ -57,6 +69,7 @@ export const ThemeButton = styled.Pressable`
 export const ThemeButtonText = styled.Text`
     font-size: 16px;
     color: ${(props) => props.theme['btnFontColor']};
+    
 `;
 export const TitleText = styled.Text`
     font-weight: 600;

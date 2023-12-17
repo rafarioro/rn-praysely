@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
-import { Container, ThemeButtonText } from '../../styles/style' 
+import { Container, ThemeButtonText , MainMenuModalContainer } from '../../styles/style' 
 import { useDispatch, useSelector } from 'react-redux';
 import { setViewMenuBar } from '../../redux/features/app/appSlice';
 import { useEffect, useState } from 'react';
@@ -15,7 +15,7 @@ export default function MenuModal() {
     const { colorScheme } = useSelector(state => state.users);
 
     return (
-        <Container>
+        <MainMenuModalContainer>
             <Pressable onPress={() => {
                 dispatch(setViewMenuBar(false))
                 }}
@@ -30,6 +30,6 @@ export default function MenuModal() {
                 >
                 <ThemeButtonText>{colorScheme }</ThemeButtonText>
             </Pressable>
-        </Container>
+        </MainMenuModalContainer>
     )
 }

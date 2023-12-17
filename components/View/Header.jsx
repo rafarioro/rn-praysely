@@ -1,4 +1,4 @@
-import { View, Text, Image, Modal } from 'react-native'
+import { View, Text, Image,Platform, Dimensions } from 'react-native'
 import React from 'react'
 import { HeaderImageWrap, MainHeader, TitleText, HeaderImage } from '../../styles/style'
 import { useDispatch, useSelector } from 'react-redux' 
@@ -8,6 +8,7 @@ import { setViewMenuBar } from '../../redux/features/app/appSlice';
 import { Redirect } from 'expo-router';
 import MenuModal from '../View/MenuModal';
 import { router } from 'expo-router';
+import Modal from "react-native-modal"; 
 
 export default function Header({section}) {
 
@@ -15,23 +16,27 @@ export default function Header({section}) {
     const { viewMenuBar } = useSelector(state => state.app);
     const dispatch = useDispatch();
 
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
     return (
         <MainHeader
             paddingTop={Constants.statusBarHeight}  
             >
                 <Modal
-                    animationType="slide"
-                    transparent={false}
-                    presentationStyle='fullScreen'
-                    visible={viewMenuBar}
-                    onRequestClose={() => { 
+                    animationIn={'slideInLeft'}
+                    animationOut={'slideOutLeft'}
+                    deviceWidth={windowWidth}
+                    deviceHeight={windowHeight} 
+                    isVisible={viewMenuBar}
+                    swipeDirection="left"
+                    onSwipeComplete={() => { 
                         dispatch(setViewMenuBar(false));
                     }}>
                     <MenuModal />
                 </Modal>
             <HeaderImageWrap
-                onPress={() => dispatch(setViewMenuBar(true))}
-                // onPress={() => router.replace('/modal')}
+                onPress={() => dispatch(setViewMenuBar(true))} 
                 >
                 <HeaderImage
                     resizeMode="contain"
