@@ -22,13 +22,10 @@ export const MainMenuModalContainer = styled.SafeAreaView`
 `;
 
 export const HideModalButton = styled.Pressable`
-
     position: absolute;
     top: 20px;
     left: 20px;
     z-index: 2;
-
-
 `
 
 export const FlexColLeft = styled.View`
@@ -37,7 +34,6 @@ export const FlexColLeft = styled.View`
     align-items: flex-start;
     justify-content: flex-start;
     overflow-y: scroll;
-
 `;
 
 

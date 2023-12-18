@@ -47,14 +47,14 @@ export default function PostFeed() {
             {
                 getPostsSuccess && viewPosts === 'You' && yourPosts.map((post, index) => {
                     return (
-                        <PostItem key={index} post={post}  />
+                        <PostItem key={index} index={index} post={post}  />
                     )
                 })
             }
             {
                 getPostsSuccess && viewPosts === 'Church' && churchPosts.map((post, index) => {
                     return (
-                        <PostItem key={index} post={post} />
+                        <PostItem key={index} index={post} post={post} />
                     )
                 })
             }
