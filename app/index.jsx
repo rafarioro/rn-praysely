@@ -11,10 +11,10 @@ export default function Page() {
     const dispatch = useDispatch();
     const {colorScheme, userData} = useSelector(state => state.users);
 
-    if(userData) return (
-      <Redirect href="/section/Home" 
-        />
-    )
+  if(userData) return (
+    <Redirect href="/section/Home" 
+      />
+  )
 
 
     return ( 
@@ -39,4 +39,5 @@ export default function Page() {
       </Landing>
     )
 }
+
 

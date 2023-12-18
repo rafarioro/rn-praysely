@@ -38,13 +38,19 @@ export default function Header({section}) {
             <HeaderImageWrap
                 onPress={() => dispatch(setViewMenuBar(true))} 
                 >
-                <HeaderImage
-                    resizeMode="contain"
-                    width={35}
-                    height={35}
-                    source={{
-                        uri: baseUrl + '/profile/' + userData.imagePath,
-                      }} />
+                    {
+                        userData && (
+                            <HeaderImage
+                                resizeMode="contain"
+                                width={35}
+                                height={35}
+                                source={{
+                                    uri: baseUrl + '/profile/' + userData.imagePath,
+                                }} 
+                                />
+                        )
+                    }
+
 
             </HeaderImageWrap>
             <TitleText>{section ? section : 'Praysely'}</TitleText> 

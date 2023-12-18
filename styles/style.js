@@ -3,8 +3,8 @@ import styled from 'styled-components/native';
 export const Container = styled.SafeAreaView`
     background-color: ${(props) => props.theme['PRIMARY_COLOR']};
     flex: 1;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     padding: 0px; 
 `;
 
@@ -36,12 +36,14 @@ export const FlexColLeft = styled.View`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    overflow-y: scroll;
+
 `;
 
 
 
 export const MainHeader = styled.View`
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
     top: 0;
     z-index: 2;
@@ -85,9 +87,24 @@ export const ThemeButton = styled.Pressable`
     padding: 10px;
     border: 1px solid ${(props) => props.theme['btnBgColor']};
 `;
+
+export const ThemeButtonWIcon = styled.Pressable`
+    padding: 10px;
+    /* border: 1px solid ${(props) => props.theme['btnBgColor']}; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: ${(props) => props.justifyContent || 'center'};
+`;
+
+
 export const ThemeButtonText = styled.Text`
     font-size: 16px;
     color: ${(props) => props.theme['btnFontColor']};
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     
 `;
 export const TitleText = styled.Text`

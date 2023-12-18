@@ -2,7 +2,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 // import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { darkTheme, lightTheme } from '../styles/theme';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
+import { Redirect, SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -43,12 +43,18 @@ function RootLayoutNav() {
  
   const { colorScheme, userData } = useSelector((state: any) => state.users);
 
+  // if(userData) {
+  //   return(
+  //     <Redirect href="/home" />
+  //   )
+    
+  // }
+
   return (
     <Provider store={store}> 
         <ThemeProvider theme={colorScheme === 'light' ? lightTheme : darkTheme}>
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
-
             <Stack.Screen name="section/Login" options={{ headerShown: false }} />
             <Stack.Screen name="section/Home" options={{ headerShown: false }} />
 
@@ -57,7 +63,8 @@ function RootLayoutNav() {
               options={{ 
                 presentation: 'modal',
                 animation: 'fade_from_bottom' 
-                 }} /> 
+              }}
+              /> 
           </Stack>
         </ThemeProvider>
     </Provider>

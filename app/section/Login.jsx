@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import { Text, View, TextInput  } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux';
 import { Pressable } from 'react-native'; 
-import { login } from '../../redux/features/auth/userSlice';
+import { login, loginReset } from '../../redux/features/auth/userSlice';
 import { StyledInput, LoginWrap, Backdrop, StyledImage, ThemeButton, Landing, LandingViewTop, LandingViewBottom } from '../../styles/style'; 
-
+import { router } from 'expo-router';
 
 
 export default function Login() {
@@ -18,27 +18,25 @@ export default function Login() {
 
     const handleLogin = () => {
 
-
-
+        
         dispatch(login({
             email: 'rafaelarias1844@gmail.com',
             password: '88888888',
         }));
-
-
-
     }
 
     useEffect(() => {
-        if (loginError) {
-            alert(loginError);
-        }
         if (loginSuccess) {
-            alert('login success');
-        }
-    }
-    , [loginError, loginSuccess]);
 
+            router.replace('/section/Home')
+        }
+    }, [loginSuccess])
+
+
+    // cleanup
+    useEffect(() => {
+        return () => { dispatch(loginReset())}
+    }, [])
 
     return ( 
       <Landing>

@@ -1,5 +1,6 @@
 import userSlice from '../features/auth/userSlice';
 import appSlice from '../features/app/appSlice';
+import postSlice from '../features/postSlice';
 import {configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {combineReducers} from "redux";
@@ -8,6 +9,7 @@ import {  persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } fr
 const reducers = combineReducers({
   app: appSlice,
   users: userSlice,
+  post: postSlice,
 });
 
 
