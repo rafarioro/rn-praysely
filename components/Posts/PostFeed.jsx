@@ -62,13 +62,11 @@ export default function PostFeed() {
     )
 }
 
-const PostFeedView = styled.View`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+const PostFeedView = styled.ScrollView`
+    display: flex; 
+
     width: 100%;
-    padding: 20px;
+    padding: 20px; 
 `
 
 
