@@ -19,6 +19,11 @@ const initialState = {
 
     errorMessage: '',
 
+    //caching 
+    lastRenderTimeYours: 0, 
+    lastRenderTimeChurch: 0
+  
+
 }
 
 
@@ -52,11 +57,14 @@ export const getPosts = createAsyncThunk('posts/getPosts', async (data) => {
             .addCase(getPosts.fulfilled, (state, action) => {
                 state.getPostsLoading = false;
                 state.getPostsSuccess = true; 
+                
 
                 if(state.viewPosts === 'You') {
                     state.yourPosts = action.payload.posts
+                    state.lastRenderTimeYours = Date.now()
                 } else {
                     state.churchPosts = action.payload.posts
+                    state.lastRenderTimeChurch = Date.now()
                 }
             })
             .addCase(getPosts.rejected, (state, action) => {

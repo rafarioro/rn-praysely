@@ -8,8 +8,7 @@ import { useEffect, useState } from 'react';
 import { setColorTheme, logout, reset} from '../../redux/features/auth/userSlice';
 import { AntDesign } from '@expo/vector-icons'; 
 import styled from 'styled-components/native';
-import { Feather } from '@expo/vector-icons'; 
-
+import { Feather, MaterialIcons } from '@expo/vector-icons';  
 
 export default function MenuModal() {
 
@@ -48,6 +47,14 @@ export default function MenuModal() {
                 <ThemeButtonWIcon onPress={() => { handleNav('/section/Home') }} >
                     <ThemeButtonText> <Feather name="home" size={24}  /> </ThemeButtonText>
                     <ThemeButtonText> Home </ThemeButtonText>
+                </ThemeButtonWIcon>
+
+            </FlexColLeft>
+
+            <FlexColLeft>
+                <ThemeButtonWIcon onPress={() => { dispatch(setColorTheme(colorScheme === 'light' ? 'dark':'light')) }} >
+                    <ThemeButtonText> <MaterialIcons name="invert-colors-on" size={24} /> </ThemeButtonText>
+                    <ThemeButtonText> View {colorScheme === 'light' ? 'dark':'light'} theme </ThemeButtonText>
                 </ThemeButtonWIcon>
 
             </FlexColLeft>

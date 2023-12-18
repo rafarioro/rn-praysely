@@ -17,11 +17,13 @@ export default function Login() {
     const { loginLoading, loginError, loginSuccess, userData } = useSelector(state => state.users);
 
     const handleLogin = () => {
-
         
+        if(!email) return alert('Please enter your email');
+        if(!password) return alert('Please enter your password');
+
         dispatch(login({
-            email: 'rafaelarias1844@gmail.com',
-            password: '88888888',
+            email: email,
+            password: password,
         }));
     }
 
@@ -55,12 +57,12 @@ export default function Login() {
             <LoginWrap>
                 <StyledInput
                     placeholder="Enter your email"
-                    onChangeText={text => setEmail(text)}
+                    onChangeText={setEmail}
                     value={email}
                     />
                 <StyledInput
                     placeholder="Enter your password"
-                    onChangeText={text => setPassword(text)}
+                    onChangeText={setPassword}
                     value={password}
                     secureTextEntry={true}
                     />               

@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
  
 export const Container = styled.SafeAreaView`
-    background-color: ${(props) => props.theme['PRIMARY_COLOR']};
+    background-color: ${(props) => props.theme['mainBg']};
     flex: 1;
     align-items: flex-start;
     justify-content: flex-start;
@@ -17,7 +17,7 @@ export const MainMenuModalContainer = styled.SafeAreaView`
     justify-content: flex-start;
     padding: 60px 20px ;  
     width: 90%;
-    border-radius: 0px 30px 30px 0px;
+    border-radius: 0px 30px 30px 30px;
     position: relative;
 `;
 
@@ -54,7 +54,7 @@ export const MainHeader = styled.View`
     justify-content: space-between;
     align-items: center;
     height: fit-content;
-    background-color: ${(props) => props.theme['PRIMARY_COLOR']};
+    background-color: ${(props) => props.theme['mainBg']};
 
 `
 
