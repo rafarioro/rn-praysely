@@ -47,7 +47,6 @@ function RootLayoutNav() {
   //   return(
   //     <Redirect href="/home" />
   //   )
-    
   // }
 
   return (

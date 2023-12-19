@@ -17,7 +17,14 @@ const initialState = {
     createPostSuccess: false,
     createPostError: false,
 
+    likePostLoading: false,
+    likedPostId: '',
+    likePostLoadingId: '',
+    likePostSuccess: false,
+    likePostError: false,
+    likePostErrorMessage: '',
     errorMessage: '',
+    isUnlikedId: '',
 
     //caching 
     lastRenderTimeYours: 0, 
@@ -28,13 +35,17 @@ const initialState = {
 
 
 export const getPosts = createAsyncThunk('posts/getPosts', async (data) => { 
-
     const response = await axios.post('https://api.praysely.com/api/posts/getPosts', data, config(data.token))
-
     return response.data
-
 });
 
+export const likePost = createAsyncThunk('posts/likePost', async (data) => {
+    const response = await axios.post('https://api.praysely.com/api/posts/like', data, config(data.token))
+
+    console.log(response.status)
+
+    return response.data
+});
 
 
   const postSlice = createSlice({
@@ -43,9 +54,8 @@ export const getPosts = createAsyncThunk('posts/getPosts', async (data) => {
     initialState, 
 
     reducers: {
-      setViewPosts: (state, action) => {
-        state.viewPosts = action.payload;
-      },
+      setViewPosts: (state, action) => { state.viewPosts = action.payload; },
+      setLikeLoading: (state, action) => { state.likePostLoadingId = action.payload; },
     },  
     extraReducers: (builder) => {
         builder
@@ -72,10 +82,41 @@ export const getPosts = createAsyncThunk('posts/getPosts', async (data) => {
                 state.getPostsError = true;
                 state.errorMessage = action.error.message;
             })
+            // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            .addCase(likePost.pending, (state, action) => {
+                state.likePostLoading = true;
+                state.likePostSuccess = false;
+                state.likePostError = false;
+                state.likePostErrorMessage = '';
+            })
+            .addCase(likePost.fulfilled, (state, action) => {
+                state.likePostLoading = false;
+                state.likePostSuccess = true; 
+                state.isUnlikedId = action.payload.isUnliked
+
+                if(state.viewPosts === 'You') {
+                    state.yourPosts[Number(action.payload.index)] = action.payload.updatedPost
+                    state.likedPostId = action.payload.updatedPost._id
+                } else {
+                    state.churchPosts[Number(action.payload.index)] = action.payload.updatedPost
+                    state.likedPostId = action.payload.updatedPost._id
+                }
+                state.likePostLoadingId = ''
+
+            })
+            .addCase(likePost.rejected, (state, action) => {
+                state.likePostLoading = false;
+                state.likePostError = true;
+                state.likePostSuccess = false;
+                state.likedPostId = '';
+                state.likePostLoadingId = '';
+                state.likePostErrorMessage = action.error.message;
+            })
+
         }
 
   });
  
-  export const { setViewPosts } = postSlice.actions;
+  export const { setViewPosts, setLikeLoading } = postSlice.actions;
   
   export default postSlice.reducer;

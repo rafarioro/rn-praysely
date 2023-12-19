@@ -1,41 +1,95 @@
 import { View, Text, Image } from 'react-native'
-import React from 'react'
+import React, {useState} from 'react'
 import { useEffect } from 'react'
 import styled from 'styled-components/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { baseUrl } from '../../assets/constants'
 import { ThemeButtonText } from '../../styles/style'
 import { FontAwesome5,  MaterialCommunityIcons } from '@expo/vector-icons';
+import { ActivityIndicator } from 'react-native'
+import { likePost, setLikeLoading } from '../../redux/features/postSlice'
 
-export default function PostItem(props) {
+export default function PostItem({ index , post }) {
+
+    const dispatch = useDispatch()
+    const { userData } = useSelector(state => state.users)
+    const { likePostSuccess, likedPostId, likePostErrorMessage, isUnlikedId } = useSelector(state => state.post)
+    const [isLiked, setIsLiked] = useState(false)
+    const [isLikeLoading, setIsLikeLoading] = useState(false)
+
 
     useEffect(() => {
-        console.log(props.post.user.profileImg.imagePath2)
+        if(post.likes.length > 0){
+            post.likes.includes(userData._id) ? setIsLiked(true) : setIsLiked(false)
+        }
     }, [])
+
+    const handleLike = () => {
+        setIsLikeLoading(true)
+        // dispatch(setLikeLoading(post._id))
+
+        dispatch(likePost({
+            token: userData.token,
+            postId: post._id,
+            index: index
+        }))
+    }
+
+    useEffect(() => {
+        if(likePostSuccess && likedPostId === post._id){
+            // dispatch(setLikeLoading(''))
+            setIsLikeLoading(false)
+
+            if(isUnlikedId === post._id){
+                setIsLiked(false)
+            }else{
+                setIsLiked(true) 
+            } 
+        }else if(likePostErrorMessage){
+            dispatch(setLikeLoading(''))
+            setIsLikeLoading(false)
+        } 
+    }, [likePostSuccess, likePostErrorMessage, likedPostId])
+    
 
     return (
         <PostItemView>
-
             <PostImageWrap>
                 <Image 
-                    source={{ uri: baseUrl + '/profile/' + props.post.user.profileImg.imagePath2 }}
+                    source={{ uri: baseUrl + '/profile/' + post.user.profileImg.imagePath2 }}
                     resizeMode="cover"
                     style={{ width: '100%', height: '100%', borderRadius: 35 }}
                     />
             </PostImageWrap>
 
-            <PostText>{props.post.postText.text}</PostText>
+            <PostText>{post.postText.text}</PostText>
 
             <PostActions>
-                <PostAction>
-                    <ThemeButtonText>
-                        <FontAwesome5 name="pray" size={18} />
-                    </ThemeButtonText>
+                <PostAction
+                    onPress={handleLike}
+                    > 
+                    <PostActionText
+                        fill={isLiked ? '#00B4CC' : false}
+                        >
+                            {
+                                (isLikeLoading) ? (
+                                    <ActivityIndicator />
+                                ) : ( 
+                                    <FontAwesome5 name="pray" size={15} />
+                                )
+                            } 
+                    </PostActionText>                    
+                    <PostActionText style={{marginLeft: 5, fontSize: 11}}>
+                        {post.likes.length}
+                    </PostActionText>
                 </PostAction>
-                <PostAction>
-                    <ThemeButtonText>
-                        <MaterialCommunityIcons name="comment-outline" size={18} />
-                    </ThemeButtonText>
+                <PostAction> 
+                    <PostActionText>
+                        <MaterialCommunityIcons name="comment-outline" size={15}  />
+                    </PostActionText>
+                    <PostActionText style={{marginLeft: 5, fontSize: 11}}>
+                        {post.comments.length}
+                    </PostActionText>
                 </PostAction>
             </PostActions>
         </PostItemView>
@@ -77,4 +131,13 @@ const PostAction = styled.Pressable`
     width: 50%;
     padding: 5px;
 
+`
+
+const PostActionText = styled.Text`    
+    font-size: 16px;
+    color: ${(props) => props.fill ? props.fill : props.theme['mainFontColor']};
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 `
