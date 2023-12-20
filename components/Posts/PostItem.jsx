@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import styled from 'styled-components/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { baseUrl } from '../../assets/constants'
-import { ThemeButtonText } from '../../styles/style'
+import { ThemeButtonText, ProfileImageWrap } from '../../styles/style'
 import { FontAwesome5,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native'
 import { likePost, setLikeLoading, setViewSinglePost } from '../../redux/features/postSlice'
@@ -26,8 +26,7 @@ export default function PostItem({ index , post }) {
     }, [])
 
     const handleLike = () => {
-        setIsLikeLoading(true)
-        // dispatch(setLikeLoading(post._id))
+        setIsLikeLoading(true) 
 
         dispatch(likePost({
             token: userData.token,
@@ -62,15 +61,25 @@ export default function PostItem({ index , post }) {
 
     return (
         <PostItemView>
-            <PostImageWrap>
+            <ProfileImageWrap>
                 <Image 
                     source={{ uri: baseUrl + '/profile/' + post.user.profileImg.imagePath2 }}
                     resizeMode="cover"
                     style={{ width: '100%', height: '100%', borderRadius: 35 }}
                     />
-            </PostImageWrap>
+            </ProfileImageWrap>
 
             <PostText>{post.postText.text}</PostText>
+
+            {
+                post.hasImage && (
+                    <Image 
+                        source={{ uri: baseUrl + '/posts/' + post.image.imagePath2 }}
+                        resizeMode='cover'
+                        style={{ width: '100%', height: 200, borderRadius: 5 }}
+                        />
+                )
+            }
 
             <PostActions>
                 <PostAction

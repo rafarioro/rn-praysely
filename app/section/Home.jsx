@@ -41,7 +41,10 @@ export default function Home() {
     });
 
     return (
-        <Container>
+        <Container
+            width={dimensions.window.width}
+            height={dimensions.window.height}
+            >
             <Header section="Home" />
 
             {!userData.isOrganization && (

@@ -6,7 +6,17 @@ export const Container = styled.SafeAreaView`
     align-items: flex-start;
     justify-content: flex-start;
     padding: 0px; 
+    width: ${(props) => props.width + 'px' || '100%'};
+    height: ${(props) => props.height + 'px' || '100%'};
 `;
+
+export const ImageOriginalAspectRatio = styled.Image`
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 5px;
+    object-fit: contain;
+    height: undefined;
+`
 
 export const MainMenuModalContainer = styled.SafeAreaView`
     background-color: ${(props) => props.theme['menuModalBg']};
@@ -25,7 +35,8 @@ export const MainModalContainer = styled.ScrollView`
     background-color: ${(props) => props.theme['menuModalBg']};
     display: flex;
     flex: 1; 
-    border-radius: 0px;
+    border-radius: 10px 10px 10px 10px;
+    padding: 10px;
     position: relative;
 `;
 
@@ -94,8 +105,7 @@ export const ThemeButton = styled.Pressable`
 `;
 
 export const ThemeButtonWIcon = styled.Pressable`
-    padding: 10px;
-    /* border: 1px solid ${(props) => props.theme['btnBgColor']}; */
+    padding: 10px; 
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -112,15 +122,27 @@ export const ThemeButtonText = styled.Text`
     justify-content: center;
     
 `;
+
+export const ThemedCloseButton= styled.Pressable`
+    position: absolute;
+    display: flex;
+    top: ${(props) => props.top || '10px'};
+    right: ${(props) => props.right || '10px'};
+    flex-direction: row;
+    align-items: center;
+    justify-content: ${(props) => props.justifyContent || 'center'};
+`;
+
+
 export const TitleText = styled.Text`
     font-weight: 600;
     font-size: ${(props) => props.fontSize || '18px'};
-    color: ${(props) => props.theme['TITLE_COLOR']};
+    color: ${(props) => props.theme['mainFontColor']};
 `;
 export const ContentText = styled.Text`
     font-weight: 500;
-    font-size: ${(props) => props.fontSize || '15px'};
-    color: ${(props) => props.theme['TITLE_COLOR']};
+    font-size: ${(props) => props.fontSize || '14px'};
+    color: ${(props) => props.theme['mainFontColor']};
 `;
 
 export const PostContainer = styled.View`
@@ -203,3 +225,10 @@ export const LoginWrap = styled.View`
     justify-content: center;
 `
 
+export const ProfileImageWrap = styled.View`
+    width: 35px;
+    height: 35px;
+    border-radius: 35px;
+    background-color: transparent; 
+    margin-bottom: 5px;
+`
