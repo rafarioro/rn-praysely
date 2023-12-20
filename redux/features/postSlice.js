@@ -59,6 +59,9 @@ export const likePost = createAsyncThunk('posts/likePost', async (data) => {
 
 export const getPostComments = createAsyncThunk('posts/getPostComments', async (data) => {
     const response = await axios.post('https://api.praysely.com/api/singlePost/getComments', data, config(data.token))
+
+    console.log(response.data)
+
     return response.data
 });
 
@@ -175,11 +178,8 @@ export const setSinglePostComment = createAsyncThunk('posts/setComment', async (
                 state.setCommentLoading = false;
                 state.setCommentError = true;
                 state.errorMessage = action.error.message;
-            })
-
-
-        }
-
+            }) 
+        } 
   });
  
   export const { setViewPosts, setLikeLoading, setViewSinglePost } = postSlice.actions;

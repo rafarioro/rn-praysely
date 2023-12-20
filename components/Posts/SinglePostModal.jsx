@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Dimensions, Image } from 'react-native'
+import { View, Text, Pressable, Dimensions, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { baseUrl } from '../../assets/constants'
@@ -15,7 +15,9 @@ export default function SinglePostModal({  }) {
     const [comment, setComment] = useState('')
     const { colorSheme } = useSelector(state => state.users)
     const { userData } = useSelector(state => state.users)
+    const { setCommentLoading, setCommentSuccess, setCommentError } = useSelector(state => state.post)
     const [aspectRatio, setAspectRatio] = useState(1)
+
 
     useEffect(() => {
         console.log('SinglePostModal')
@@ -42,8 +44,8 @@ export default function SinglePostModal({  }) {
     }, [])
 
     const handleSetComment = () => {
-        // if(!comment) return alert('Please enter a comment') 
-         console.log('handleSetComment: ' + comment)
+        if(!comment) return alert('Please enter a comment')
+
         dispatch(setSinglePostComment({
             token: userData.token,
             postId: singlePostData._id,
@@ -51,6 +53,12 @@ export default function SinglePostModal({  }) {
             residingId: singlePostData.postedToId
         }))
     }
+
+    useEffect(() => {
+        if(setCommentSuccess){
+            setComment('')
+        }
+    }, [setCommentSuccess])
 
 
     if(Object.keys(singlePostData).length === 0){
@@ -107,7 +115,19 @@ export default function SinglePostModal({  }) {
                         onPress={handleSetComment}
                         style={{width: '20%', height: '100%', borderRadius: 10}}
                         >
-                        <ThemeButtonText><Feather name="send" size={24}  /></ThemeButtonText>
+                        <ThemeButtonText>
+                            {
+                                setCommentLoading ? 
+                                (
+                                    <ActivityIndicator />
+                                )
+                                :
+                                (
+                                    <Feather name="send" size={24}  />
+                                )
+                            }
+                            
+                        </ThemeButtonText>
                     </ThemeButtonWIcon>        
                 </InputWrap>
 
@@ -152,7 +172,7 @@ const TopSection = styled.View`
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    margin-top: 10px; 
+    margin-top: 20px; 
 `
 const NameSection = styled.View` 
     display: flex;

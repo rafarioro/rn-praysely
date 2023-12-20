@@ -1,11 +1,11 @@
-import { View, Text, ActivityIndicator } from 'react-native'
+import { View, Text, ActivityIndicator, Image } from 'react-native'
 import React, { useEffect } from 'react'
 import styled from 'styled-components/native'
 import { useSelector, useDispatch } from 'react-redux'
-import { ThemeButtonText } from '../../../styles/style'
+import { ContentText, ThemeButtonText } from '../../../styles/style'
 import { getPostComments } from '../../../redux/features/postSlice' 
-
-
+import { CommentItemContainer, CommentProfileImage, CommentItemContent, CommentItemInfo } from '../../../styles/comments'
+import { baseUrl } from '../../../assets/constants'
 
 export default function SinglePostComments({postId}) {
 
@@ -37,9 +37,25 @@ export default function SinglePostComments({postId}) {
                     comments.map((comment, index) => {
 
                         return (
-                            <View key={index}>
-                                <Text>dadsfasdf </Text>
-                            </View>
+
+                            <CommentItemContainer key={index}>
+                                <CommentProfileImage>
+                                    <Image 
+                                        style={{width: 35, height: 35, borderRadius: 35}}
+                                        source={{uri: baseUrl + '/profile/' + comment.author.profileImg.imagePath2}} 
+                                        />
+                                </CommentProfileImage>
+                                <CommentItemContent>
+                                    
+                                    <CommentItemInfo>
+                                        <ContentText fontSize={'12px'}>{comment.author.fullName}</ContentText>
+                                        <ContentText fontSize={'11px'}>{comment.comment}  </ContentText>
+                                    </CommentItemInfo>
+                                    
+                                
+                                
+                                </CommentItemContent>
+                            </CommentItemContainer>
                         )
 
                     }   
@@ -51,8 +67,7 @@ export default function SinglePostComments({postId}) {
 
 
 const CommentsContainer = styled.View`
-    margin-top: 10px;
-    background-color: ${props => props.theme['postBgColor']};
+    margin-top: 10px; 
     padding: 10px;
     border-radius: 8px;
 `
