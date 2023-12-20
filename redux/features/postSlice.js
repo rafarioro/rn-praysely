@@ -16,6 +16,15 @@ const initialState = {
     getPostsSuccess: false,
     getPostsError: false,
 
+    comments: [],
+    getCommentsLoading: false,  
+    getCommentsSuccess: false,
+    getCommentsError: false,
+
+    setCommentLoading: false,
+    setCommentSuccess: false,
+    setCommentError: false,
+
     createPostLoading: false,
     createPostSuccess: false,
     createPostError: false,
@@ -44,12 +53,14 @@ export const getPosts = createAsyncThunk('posts/getPosts', async (data) => {
 
 export const likePost = createAsyncThunk('posts/likePost', async (data) => {
     const response = await axios.post('https://api.praysely.com/api/posts/like', data, config(data.token))
-
     console.log(response.status)
-
     return response.data
 });
 
+export const getPostComments = createAsyncThunk('posts/getPostComments', async (data) => {
+    const response = await axios.post('https://api.praysely.com/api/singlePost/getComments', data, config(data.token))
+    return response.data
+}   );
 
   const postSlice = createSlice({
     name: 'post',
@@ -121,6 +132,27 @@ export const likePost = createAsyncThunk('posts/likePost', async (data) => {
                 state.likePostLoadingId = '';
                 state.likePostErrorMessage = action.error.message;
             })
+            // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            .addCase(getPostComments.pending, (state, action) => {
+                state.getCommentsLoading = true;
+                state.getCommentsSuccess = false;
+                state.getCommentsError = false;
+            })
+            .addCase(getPostComments.fulfilled, (state, action) => {
+                state.getCommentsLoading = false;
+                state.getCommentsSuccess = true; 
+                state.comments = action.payload.docs
+ 
+                console.log(action.payload.docs.length)
+
+            })
+            .addCase(getPostComments.rejected, (state, action) => {
+                state.getCommentsLoading = false;
+                state.getCommentsError = true;
+                state.errorMessage = action.error.message;
+            })
+
+
 
         }
 

@@ -10,13 +10,15 @@ export const Container = styled.SafeAreaView`
     height: ${(props) => props.height + 'px' || '100%'};
 `;
 
-export const ImageOriginalAspectRatio = styled.Image`
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 5px;
-    object-fit: contain;
-    height: undefined;
-`
+export const ImageOriginalAspectRatio = styled.Image.attrs(props => ({
+    resizeMode: "cover"
+}))`
+    width: 100%; 
+    border-radius: 5px; 
+    aspect-ratio: ${(props) => props.aspectRatio || 1};
+`   
+
+
 
 export const MainMenuModalContainer = styled.SafeAreaView`
     background-color: ${(props) => props.theme['menuModalBg']};

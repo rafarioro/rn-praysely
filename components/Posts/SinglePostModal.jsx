@@ -2,19 +2,20 @@ import { View, Text, Pressable, Dimensions, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { baseUrl } from '../../assets/constants'
-import { StyledInput, MainModalContainer, ProfileImageWrap, ThemedCloseButton, ThemeButtonText, ContentText, ImageOriginalAspectRatio } from '../../styles/style'
+import { StyledInput , MainModalContainer, ProfileImageWrap, ThemedCloseButton, ThemeButtonText, ContentText, ImageOriginalAspectRatio, ThemeButtonWIcon } from '../../styles/style'
 import { setViewSinglePost } from '../../redux/features/postSlice'
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons'; 
 import styled from 'styled-components'
-import TimeAgo from 'react-native-timeago';
-// import moment from 'moment';
+import SinglePostComments from './SinglePost/SinglePostComments'
 
-let timestamp = "2015-06-21T06:24:44.124Z";
 
 export default function SinglePostModal({  }) {
 
     const dispatch = useDispatch()
     const [comment, setComment] = useState('')
+    const { colorSheme } = useSelector(state => state.users)
+
+    const [aspectRatio, setAspectRatio] = useState(1)
 
     useEffect(() => {
         console.log('SinglePostModal')
@@ -29,7 +30,19 @@ export default function SinglePostModal({  }) {
 
     const { viewSinglePost, singlePostData } = useSelector(state => state.post)
     
-    // check is single post data object is empty
+    useEffect(() => {
+
+        if(singlePostData.hasImage){
+            let uri = baseUrl + '/posts/' + singlePostData.image.imagePath2
+
+            Image.getSize(uri, (width, height) => {
+                setAspectRatio(Number(width/height).toFixed(2));
+            });
+        }
+    }, [])
+
+
+
 
     if(Object.keys(singlePostData).length === 0){
         return null
@@ -52,7 +65,7 @@ export default function SinglePostModal({  }) {
                         </ProfileImageWrap>         
                         <NameInfo>
                             <ContentText>{singlePostData.user.fullName}</ContentText>
-                            <ContentText fontSize={'11px'} > <TimeAgo time={timestamp} /></ContentText>
+                            <ContentText fontSize={'11px'} > 8 hrs ago </ContentText>
                         </NameInfo>                   
                     </NameSection> 
                     <PostType>
@@ -62,31 +75,41 @@ export default function SinglePostModal({  }) {
 
                 <PostContentSection>
 
-                    <ContentText>{singlePostData.postText.text}</ContentText>
+                    <ContentText style={{marginBottom: 10}}>{singlePostData.postText.text}</ContentText>
 
                     {
                         singlePostData.hasImage && (
-                            <Image 
-                                source={{ uri: baseUrl + '/posts/' + singlePostData.image.imagePath2 }} 
-                                style={{ width: "100%", resizeMode: "contain", height: undefined, aspectRatio: 1, }}
+                            <ImageOriginalAspectRatio 
+                                aspectRatio={aspectRatio}
+                                source={{ uri: baseUrl + '/posts/' + singlePostData.image.imagePath2 }}
                                 />
                         )
                     }                    
                 </PostContentSection>
 
                 {/* add text input */}
-
-                <StyledInput
-                    placeholder="Enter a comment"
-                    onChangeText={setComment}
-                    value={comment}
-                    />
                 
+                <InputWrap>
+                    <CommentInput 
+                        placeholder="Enter a comment"
+                        onChangeText={setComment}
+                        value={comment} 
+                        />       
+                    <ThemeButtonWIcon
+                        style={{width: '20%', height: '100%', borderRadius: 10}}
+                        >
+                        <ThemeButtonText><Feather name="send" size={24}  /></ThemeButtonText>
+                    </ThemeButtonWIcon>        
+                </InputWrap>
+
+                <SinglePostComments postId={singlePostData._id} />  
  
             </MainModalContainer>
         )        
     }
 }
+
+
 
 const TopSection = styled.View`
     display: flex;
@@ -94,9 +117,9 @@ const TopSection = styled.View`
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    
+    margin-top: 10px; 
 `
-const NameSection = styled.View`
+const NameSection = styled.View` 
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -118,7 +141,9 @@ const PostContentSection = styled.View`
     align-items: flex-start;
     justify-content: flex-start;  
     width: 100%;
-    padding: 5px;  
+    height: fit-content;
+    margin-top: 15px;
+    margin-bottom: 10px;
 `
 
 const PostType = styled.View`
@@ -130,5 +155,25 @@ const PostType = styled.View`
     background-color: #00B4CC;
     border-radius: 10px;
     margin-left: 8px;
+
+`
+
+const CommentInput = styled.TextInput.attrs(props => ({
+    placeholderTextColor: props.theme['mainFontColor']
+  }))`
+    background-color: ${(props) => props.theme['postBgColor']};
+    max-width: 80%;
+    width: 80%;
+    border-radius: 28px;
+    padding: 10px 15px;  
+    color: ${(props) => props.theme['mainFontColor']};
+`
+const InputWrap = styled.View`
+    
+    display: flex;  
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 
 `
