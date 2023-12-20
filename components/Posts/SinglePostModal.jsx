@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { baseUrl } from '../../assets/constants'
 import { StyledInput , MainModalContainer, ProfileImageWrap, ThemedCloseButton, ThemeButtonText, ContentText, ImageOriginalAspectRatio, ThemeButtonWIcon } from '../../styles/style'
-import { setViewSinglePost } from '../../redux/features/postSlice'
+import { setViewSinglePost, setSinglePostComment } from '../../redux/features/postSlice'
 import { AntDesign, Feather } from '@expo/vector-icons'; 
 import styled from 'styled-components'
 import SinglePostComments from './SinglePost/SinglePostComments'
@@ -14,7 +14,7 @@ export default function SinglePostModal({  }) {
     const dispatch = useDispatch()
     const [comment, setComment] = useState('')
     const { colorSheme } = useSelector(state => state.users)
-
+    const { userData } = useSelector(state => state.users)
     const [aspectRatio, setAspectRatio] = useState(1)
 
     useEffect(() => {
@@ -41,7 +41,16 @@ export default function SinglePostModal({  }) {
         }
     }, [])
 
-
+    const handleSetComment = () => {
+        // if(!comment) return alert('Please enter a comment') 
+         console.log('handleSetComment: ' + comment)
+        dispatch(setSinglePostComment({
+            token: userData.token,
+            postId: singlePostData._id,
+            comment: comment,
+            residingId: singlePostData.postedToId
+        }))
+    }
 
 
     if(Object.keys(singlePostData).length === 0){
@@ -86,8 +95,7 @@ export default function SinglePostModal({  }) {
                         )
                     }                    
                 </PostContentSection>
-
-                {/* add text input */}
+ 
                 
                 <InputWrap>
                     <CommentInput 
@@ -96,20 +104,47 @@ export default function SinglePostModal({  }) {
                         value={comment} 
                         />       
                     <ThemeButtonWIcon
+                        onPress={handleSetComment}
                         style={{width: '20%', height: '100%', borderRadius: 10}}
                         >
                         <ThemeButtonText><Feather name="send" size={24}  /></ThemeButtonText>
                     </ThemeButtonWIcon>        
                 </InputWrap>
 
-                <SinglePostComments postId={singlePostData._id} />  
+                {
+                    singlePostData.comments.length > 0 ? 
+                    (
+                        <SinglePostComments postId={singlePostData._id} />  
+                    )
+                    : singlePostData.commentsDisabled ? 
+                    (
+                        <NoCommentsView>
+                            <ContentText>Comments Disabled</ContentText>
+                        </NoCommentsView>
+                    )
+                    :
+                    (
+                        <NoCommentsView>
+                            <ContentText> No Comments Yet </ContentText>
+                        </NoCommentsView>
+                    )
+                }
+                
  
             </MainModalContainer>
         )        
     }
 }
 
+const NoCommentsView = styled.View`
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+
+`
 
 const TopSection = styled.View`
     display: flex;

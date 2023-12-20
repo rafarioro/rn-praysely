@@ -60,7 +60,16 @@ export const likePost = createAsyncThunk('posts/likePost', async (data) => {
 export const getPostComments = createAsyncThunk('posts/getPostComments', async (data) => {
     const response = await axios.post('https://api.praysely.com/api/singlePost/getComments', data, config(data.token))
     return response.data
-}   );
+});
+
+export const setSinglePostComment = createAsyncThunk('posts/setComment', async (data) => {
+    const response = await axios.post('https://api.praysely.com/api/singlePost/setComment', data, config(data.token))
+    
+    console.log(response.data)
+
+    return response.data
+});
+
 
   const postSlice = createSlice({
     name: 'post',
@@ -151,7 +160,22 @@ export const getPostComments = createAsyncThunk('posts/getPostComments', async (
                 state.getCommentsError = true;
                 state.errorMessage = action.error.message;
             })
-
+            // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            .addCase(setSinglePostComment.pending, (state, action) => {
+                state.setCommentLoading = true;
+                state.setCommentSuccess = false;
+                state.setCommentError = false;
+            })
+            .addCase(setSinglePostComment.fulfilled, (state, action) => {
+                state.setCommentLoading = false;
+                state.setCommentSuccess = true; 
+                state.comments.unshift(action.payload)
+            })
+            .addCase(setSinglePostComment.rejected, (state, action) => {
+                state.setCommentLoading = false;
+                state.setCommentError = true;
+                state.errorMessage = action.error.message;
+            })
 
 
         }
