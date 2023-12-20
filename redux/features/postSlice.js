@@ -5,6 +5,9 @@ import { config } from '../apiHeaders';
 const initialState = {
 
     viewPosts: 'You',
+    
+    viewSinglePost: false,
+    singlePostData: {},
 
     yourPosts: [],
     churchPosts: [],
@@ -54,8 +57,14 @@ export const likePost = createAsyncThunk('posts/likePost', async (data) => {
     initialState, 
 
     reducers: {
-      setViewPosts: (state, action) => { state.viewPosts = action.payload; },
-      setLikeLoading: (state, action) => { state.likePostLoadingId = action.payload; },
+        setViewPosts: (state, action) => { state.viewPosts = action.payload; },
+        setLikeLoading: (state, action) => { state.likePostLoadingId = action.payload; },
+        setViewSinglePost: (state, action) => { 
+
+            state.viewSinglePost = action.payload.viewSinglePost
+            state.singlePostData = action.payload.singlePostData
+                 
+        },
     },  
     extraReducers: (builder) => {
         builder
@@ -117,6 +126,6 @@ export const likePost = createAsyncThunk('posts/likePost', async (data) => {
 
   });
  
-  export const { setViewPosts, setLikeLoading } = postSlice.actions;
+  export const { setViewPosts, setLikeLoading, setViewSinglePost } = postSlice.actions;
   
   export default postSlice.reducer;

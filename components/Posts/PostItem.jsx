@@ -7,7 +7,8 @@ import { baseUrl } from '../../assets/constants'
 import { ThemeButtonText } from '../../styles/style'
 import { FontAwesome5,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native'
-import { likePost, setLikeLoading } from '../../redux/features/postSlice'
+import { likePost, setLikeLoading, setViewSinglePost } from '../../redux/features/postSlice'
+import { router } from 'expo-router'
 
 export default function PostItem({ index , post }) {
 
@@ -51,6 +52,13 @@ export default function PostItem({ index , post }) {
         } 
     }, [likePostSuccess, likePostErrorMessage, likedPostId])
     
+    const handleNav = () => {
+        dispatch(setViewSinglePost({
+            viewSinglePost: true,
+            singlePostData: post
+        }))
+    }
+
 
     return (
         <PostItemView>
@@ -83,7 +91,9 @@ export default function PostItem({ index , post }) {
                         {post.likes.length}
                     </PostActionText>
                 </PostAction>
-                <PostAction> 
+                <PostAction 
+                    onPress={handleNav}
+                    > 
                     <PostActionText>
                         <MaterialCommunityIcons name="comment-outline" size={15}  />
                     </PostActionText>

@@ -21,6 +21,15 @@ export const MainMenuModalContainer = styled.SafeAreaView`
     position: relative;
 `;
 
+export const MainModalContainer = styled.ScrollView`
+    background-color: ${(props) => props.theme['menuModalBg']};
+    display: flex;
+    flex: 1; 
+    border-radius: 0px;
+    position: relative;
+`;
+
+
 export const HideModalButton = styled.Pressable`
     position: absolute;
     top: 20px;

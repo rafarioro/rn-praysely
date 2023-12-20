@@ -1,22 +1,44 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, Dimensions } from 'react-native'
+import React, {useState, useEffect} from 'react'
 import { Container, ThemeButtonText, TitleText } from '../../styles/style'
-import Header from '../../components/View/Header'
-import { useEffect } from 'react'
+import Header from '../../components/View/Header' 
 import styled from 'styled-components/native'
 import { useDispatch, useSelector } from 'react-redux'
 import PostFeed from '../../components/Posts/PostFeed'
-import { setViewPosts } from '../../redux/features/postSlice'
+import { setViewPosts, setViewSinglePost } from '../../redux/features/postSlice'
+import Modal from "react-native-modal";
+import SinglePostModal from '../../components/Posts/SinglePostModal'
+
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
+
 
 export default function Home() {
 
+
     const dispatch = useDispatch()
     const { userData } = useSelector(state => state.users)
-    const { viewPosts } = useSelector(state => state.post)
+    const { viewPosts, viewSinglePost } = useSelector(state => state.post)
 
     useEffect(() => {
         console.log('Home')
     }, [])
+
+    const [dimensions, setDimensions] = useState({
+        window: windowDimensions,
+        screen: screenDimensions,
+    });
+
+    useEffect(() => {
+        const subscription = Dimensions.addEventListener(
+          'change',
+          ({window, screen}) => {
+            setDimensions({window, screen});
+          },
+        );
+        return () => subscription?.remove();
+    });
 
     return (
         <Container>
@@ -42,6 +64,23 @@ export default function Home() {
 
             <PostFeed />
             
+            <Modal
+                propagateSwipe={true}
+                animationIn={'slideInUp'}
+                animationOut={'slideOutDown'}
+                deviceWidth={dimensions.window.width}
+                deviceHeight={dimensions.window.height} 
+                isVisible={viewSinglePost}
+                swipeDirection={'down'}
+                onSwipeComplete={() => { 
+                    dispatch(setViewSinglePost({
+                        viewSinglePost: false,
+                        singlePostData: {}
+                    }));
+                }}
+                >
+                    <SinglePostModal />
+            </Modal>
 
         </Container>
     )
