@@ -56,7 +56,12 @@ function RootLayoutNav() {
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="section/Login" options={{ headerShown: false }} />
             <Stack.Screen name="section/Home" options={{ headerShown: false }} />
-            <Stack.Screen name="post/[postId]" options={{ headerShown: false }} />
+            <Stack.Screen name="post/[postId]" options={{
+              headerTitle: 'Post',
+              // headerBackTitle: 'Posts',
+              // headerBackImage: () => <FontAwesome name="chevron-left" size={20} />,
+            }} />
+            
 
             <Stack.Screen 
               name="modal" 

@@ -1,33 +1,37 @@
 import { View, Text, Pressable, Dimensions, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Header from '../../components/View/Header'
 import { baseUrl } from '../../assets/constants'
-import { StyledInput , MainModalContainer, ProfileImageWrap, ThemedCloseButton, ThemeButtonText, ContentText, ImageOriginalAspectRatio, ThemeButtonWIcon } from '../../styles/style'
-import { setViewSinglePost, setSinglePostComment } from '../../redux/features/postSlice'
+import { StyledInput, MainModalContainer, ProfileImageWrap, ThemedCloseButton, ThemeButtonText, ContentText, ImageOriginalAspectRatio, ThemeButtonWIcon } from '../../styles/style'
+import { setViewSinglePost, setSinglePostComment, getSinglePost } from '../../redux/features/postSlice'
 import { AntDesign, Feather } from '@expo/vector-icons'; 
 import styled from 'styled-components'
-import SinglePostComments from './SinglePost/SinglePostComments'
+import SinglePostComments from '../../components/Posts/SinglePost/SinglePostComments'
+import { useLocalSearchParams, useGlobalSearchParams, Link } from 'expo-router';
 
 
-export default function SinglePostModal({  }) {
-
+export default function SinglePost() {
+ 
     const dispatch = useDispatch()
-    const [comment, setComment] = useState('')
-    const { colorSheme } = useSelector(state => state.users)
+    const [comment, setComment] = useState('') 
     const { userData } = useSelector(state => state.users)
-    const { comments, setCommentLoading, setCommentSuccess, setCommentError } = useSelector(state => state.post)
+    const { singlePostLoading, singlePostSuccess, comments, setCommentLoading, setCommentSuccess, setCommentError } = useSelector(state => state.post)
     const [aspectRatio, setAspectRatio] = useState(1)
-    
 
-    useEffect(() => {
-        console.log('SinglePostModal')
+    const { postId } = useLocalSearchParams()
+
+    useEffect(() => { 
+
         if(Object.keys(singlePostData).length === 0){
-            console.log('SinglePostModal: singlePostData is empty')
-        }else{
-            console.log('SinglePostModal: singlePostData is not empty')
-            // console.log(singlePostData)
+
+            dispatch(getSinglePost({   
+                token: userData.token,
+                postId: postId
+             }))
         }
     } , [])
+
 
     const { viewSinglePost, singlePostData } = useSelector(state => state.post)
     
@@ -47,9 +51,9 @@ export default function SinglePostModal({  }) {
 
         dispatch(setSinglePostComment({
             token: userData.token,
-            postId: singlePostData._id,
+            postId: postId,
             comment: comment,
-            residingId: singlePostData.postedToId
+            residingId: userData.memberOf[0]
         }))
     }
 
@@ -60,24 +64,25 @@ export default function SinglePostModal({  }) {
     }, [setCommentSuccess])
 
 
-    if(Object.keys(singlePostData).length === 0){
-        return null
-    }else{
+    if(singlePostLoading || Object.keys(singlePostData).length === 0){
+        return <ActivityIndicator style={{marginTop: 19}} />
+    }else if(Object.keys(singlePostData).length > 0){
         return (
             <MainModalContainer>
 
-                <ThemedCloseButton onPress={() => { dispatch(setViewSinglePost({ viewSinglePost: false, singlePostData: {} })) }} >
-                    <ThemeButtonText> <AntDesign name="close" size={19}  /> </ThemeButtonText> 
-                </ThemedCloseButton>
- 
                 <TopSection>
                     <NameSection>
                         <ProfileImageWrap>
-                            <Image 
-                                source={{ uri: baseUrl + '/profile/' + singlePostData.user.profileImg.imagePath2 }}
-                                resizeMode="cover"
-                                style={{ width: '100%', height: '100%', borderRadius: 35 }}
-                                />
+                            {
+                                singlePostData.user.profileImg && (
+                                    <Image 
+                                        source={{ uri: baseUrl + '/profile/' + singlePostData.user.profileImg.imagePath2 }}
+                                        resizeMode="cover"
+                                        style={{ width: '100%', height: '100%', borderRadius: 35 }}
+                                        />
+                                )
+                            }
+
                         </ProfileImageWrap>         
                         <NameInfo>
                             <ContentText>{singlePostData.user.fullName}</ContentText>
@@ -142,7 +147,7 @@ export default function SinglePostModal({  }) {
                     )
                     :
                     (
-                        <SinglePostComments postId={singlePostData._id} /> 
+                        <SinglePostComments postId={postId} /> 
                     )
                 }
             </MainModalContainer>

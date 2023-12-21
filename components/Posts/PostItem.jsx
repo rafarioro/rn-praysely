@@ -9,6 +9,8 @@ import { FontAwesome5,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native'
 import { likePost, setLikeLoading, setViewSinglePost } from '../../redux/features/postSlice'
 import { router } from 'expo-router'
+// import SinglePostComments from './SinglePost/SinglePostComments'
+
 
 export default function PostItem({ index , post }) {
 
@@ -52,10 +54,14 @@ export default function PostItem({ index , post }) {
     }, [likePostSuccess, likePostErrorMessage, likedPostId])
     
     const handleNav = () => {
+        
         dispatch(setViewSinglePost({
-            viewSinglePost: true,
+            viewSinglePost: false,
             singlePostData: post
         }))
+
+        router.push(`/post/${post._id}`)
+
     }
 
 

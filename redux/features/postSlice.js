@@ -17,9 +17,18 @@ const initialState = {
     getPostsError: false,
 
     comments: [],
+
+    // should also be for replies
+    viewCommentModal: false,
+    commentModalData: {},
+
     getCommentsLoading: false,  
     getCommentsSuccess: false,
     getCommentsError: false,
+
+    singlePostLoading: false,
+    singlePostSuccess: false,
+    singlePostError: false,
 
     setCommentLoading: false,
     setCommentSuccess: false,
@@ -67,9 +76,13 @@ export const getPostComments = createAsyncThunk('posts/getPostComments', async (
 
 export const setSinglePostComment = createAsyncThunk('posts/setComment', async (data) => {
     const response = await axios.post('https://api.praysely.com/api/singlePost/setComment', data, config(data.token))
-    
     console.log(response.data)
+    return response.data
+});
 
+
+export const getSinglePost = createAsyncThunk('posts/getSinglePost', async (data) => {
+    const response = await axios.post('https://api.praysely.com/api/singlePost/', data, config(data.token))
     return response.data
 });
 
@@ -88,6 +101,7 @@ export const setSinglePostComment = createAsyncThunk('posts/setComment', async (
             state.singlePostData = action.payload.singlePostData
                  
         },
+        setViewCommentModal: (state, action) => { state.viewCommentModal = action.payload; },
     },  
     extraReducers: (builder) => {
         builder
@@ -155,8 +169,8 @@ export const setSinglePostComment = createAsyncThunk('posts/setComment', async (
                 state.getCommentsSuccess = true; 
                 state.comments = action.payload.docs
  
+                
                 console.log(action.payload.docs.length)
-
             })
             .addCase(getPostComments.rejected, (state, action) => {
                 state.getCommentsLoading = false;
@@ -179,6 +193,22 @@ export const setSinglePostComment = createAsyncThunk('posts/setComment', async (
                 state.setCommentError = true;
                 state.errorMessage = action.error.message;
             }) 
+            // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            .addCase(getSinglePost.pending, (state, action) => {
+                state.singlePostLoading = true;
+                state.singlePostSuccess = false;
+                state.singlePostError = false;
+            })
+            .addCase(getSinglePost.fulfilled, (state, action) => {
+                state.singlePostLoading = false;
+                state.singlePostSuccess = true; 
+                state.singlePostData = action.payload
+            })
+            .addCase(getSinglePost.rejected, (state, action) => {
+                state.singlePostLoading = false;
+                state.singlePostError = true;
+                state.errorMessage = action.error.message;
+            })
         } 
   });
  
