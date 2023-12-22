@@ -4,8 +4,11 @@ import styled from 'styled-components/native'
 import { useSelector, useDispatch } from 'react-redux'
 import { ContentText, ThemeButtonText } from '../../../styles/style'
 import { getPostComments } from '../../../redux/features/postSlice' 
-import { CommentItemContainer, CommentProfileImage, CommentItemContent, CommentItemInfo } from '../../../styles/comments'
+import { CommentItemContainer, CommentProfileImage, CommentItemContent, CommentItemInfo, CommentItemDots } from '../../../styles/comments'
 import { baseUrl } from '../../../assets/constants'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import CommentItem from '../../Common/CommentItem'
+
 
 export default function SinglePostComments({postId}) {
 
@@ -31,46 +34,28 @@ export default function SinglePostComments({postId}) {
 
         return (
             <CommentsContainer>
-                {
-                    comments && comments.length > 0 ? 
-                    (
-                        comments.map((comment, index) => {
+            {
+                comments && comments.length > 0 ? 
+                (
+                    comments.map((comment, index) => {
 
-                            return (
+                        return (
+                            <CommentItem
+                                key={comment._id} 
+                                comment={comment} 
+                                index={index}  
+                                />
+                        )
+                    })                     
+                )
+                :
+                (
+                    <NoCommentsView>
+                        <ContentText fontSize={'12px'}>No comments yet</ContentText>
+                    </NoCommentsView>
+                )
 
-                                <CommentItemContainer key={index}>
-                                    <CommentProfileImage>
-                                        {
-                                            comment.author.profileImg &&
-                                            (
-                                                <Image 
-                                                    style={{width: 35, height: 35, borderRadius: 35}}
-                                                    source={{uri: baseUrl + '/profile/' + comment.author.profileImg.imagePath2}} 
-                                                    />
-                                            )
-                                        }
-
-                                    </CommentProfileImage>
-                                    <CommentItemContent>
-                                        
-                                        <CommentItemInfo>
-                                            <ContentText fontSize={'12px'}>{comment.author.fullName}</ContentText>
-                                            <ContentText fontSize={'11px'}>{comment.comment}  </ContentText>
-                                        </CommentItemInfo>
-                                        
-                                    </CommentItemContent>
-                                </CommentItemContainer>
-                            )
-                        })                     
-                    )
-                    :
-                    (
-                        <NoCommentsView>
-                            <ContentText fontSize={'12px'}>No comments yet</ContentText>
-                        </NoCommentsView>
-                    )
- 
-                }
+            }
             </CommentsContainer>
         )
     }
@@ -87,5 +72,5 @@ const NoCommentsView = styled.View`
 const CommentsContainer = styled.View`
     margin-top: 10px; 
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 8px; 
 `

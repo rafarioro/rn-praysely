@@ -42,6 +42,23 @@ export const MainModalContainer = styled.ScrollView`
     position: relative;
 `;
 
+export const ItemModalContainer = styled.ScrollView`
+    background-color: ${(props) => props.theme['menuModalBg']};
+    display: flex;
+    border-radius: 10px 10px 10px 10px;
+    padding: 10px;
+    position: relative;
+    height: ${(props) => props.height + 'px'};
+`;
+
+export const MainPageContainer = styled.ScrollView`
+    background-color: ${(props) => props.theme['menuModalBg']};
+    display: flex;
+    flex: 1;
+    padding: 10px;
+    position: relative;
+`;
+
 
 export const HideModalButton = styled.Pressable`
     position: absolute;

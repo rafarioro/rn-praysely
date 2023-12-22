@@ -6,11 +6,22 @@ export const CommentItemContainer = styled.View`
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 0px;
+    padding: 5px;
     margin-bottom: 10px;
     border-radius: 10px; 
     width: 100%;
     flex: 1; 
+    border-bottom-color: ${(props) => props.theme['borderColor']};
+    border-bottom-width: 1px;
+    padding-bottom: 13px;
+    position: relative;
+`
+
+export const CommentItemDots = styled.Pressable`
+    position: absolute;
+    top: 0px;
+    right: 0px;
+
 `
 
 export const CommentProfileImage = styled.View`

@@ -1,15 +1,15 @@
 const darkTheme = {
     mainBg: '#000',
-    mainFontColor: '#fff',
+    mainFontColor: '#b3b3b3',
     PRIMARY_COLOR: '#000',
     menuModalBg: '#292929',
     SECONDARY_COLOR: '#73737d',
     TITLE_COLOR: '#fff',
     BACKGROUND_COLOR: '#111216',
     btnFontColor: '#fff',
-    btnBgColor: '#A9A9A9',
-    borderColor: '#fff',
+    btnBgColor: '#A9A9A9', 
     postBgColor: '#292929',
+    borderColor: '#505050b1',
 };
 const lightTheme = {
     mainBg: '#eeeeee',
@@ -21,8 +21,8 @@ const lightTheme = {
     BACKGROUND_COLOR: '#fff',
     btnFontColor: '#164863',
     btnBgColor: '#E3F4F4',
-    borderColor: '#D2E9E9',
-    postBgColor: '#fff',
+    borderColor: '#bdbdbdae',
+    postBgColor: '#fff', 
 };
 export { lightTheme, darkTheme };
 

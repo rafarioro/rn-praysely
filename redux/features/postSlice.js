@@ -101,7 +101,10 @@ export const getSinglePost = createAsyncThunk('posts/getSinglePost', async (data
             state.singlePostData = action.payload.singlePostData
                  
         },
-        setViewCommentModal: (state, action) => { state.viewCommentModal = action.payload; },
+        setViewCommentModal: (state, action) => { 
+            state.commentModalData = action.payload.commentModalData
+            state.viewCommentModal = action.payload.viewCommentModal
+        },
     },  
     extraReducers: (builder) => {
         builder
@@ -212,6 +215,6 @@ export const getSinglePost = createAsyncThunk('posts/getSinglePost', async (data
         } 
   });
  
-  export const { setViewPosts, setLikeLoading, setViewSinglePost } = postSlice.actions;
+  export const { setViewPosts, setLikeLoading, setViewSinglePost, setViewCommentModal } = postSlice.actions;
   
   export default postSlice.reducer;

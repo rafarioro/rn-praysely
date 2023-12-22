@@ -3,12 +3,17 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Header from '../../components/View/Header'
 import { baseUrl } from '../../assets/constants'
-import { StyledInput, MainModalContainer, ProfileImageWrap, ThemedCloseButton, ThemeButtonText, ContentText, ImageOriginalAspectRatio, ThemeButtonWIcon } from '../../styles/style'
-import { setViewSinglePost, setSinglePostComment, getSinglePost } from '../../redux/features/postSlice'
+import { StyledInput, MainPageContainer, ProfileImageWrap, ThemedCloseButton, ThemeButtonText, ContentText, ImageOriginalAspectRatio, ThemeButtonWIcon } from '../../styles/style'
+import { setViewSinglePost, setSinglePostComment, getSinglePost, setViewCommentModal } from '../../redux/features/postSlice'
 import { AntDesign, Feather } from '@expo/vector-icons'; 
 import styled from 'styled-components'
 import SinglePostComments from '../../components/Posts/SinglePost/SinglePostComments'
 import { useLocalSearchParams, useGlobalSearchParams, Link } from 'expo-router';
+import ItemModal from '../../components/Common/ItemModal'
+import Modal from "react-native-modal";
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 
 export default function SinglePost() {
@@ -16,7 +21,7 @@ export default function SinglePost() {
     const dispatch = useDispatch()
     const [comment, setComment] = useState('') 
     const { userData } = useSelector(state => state.users)
-    const { singlePostLoading, singlePostSuccess, comments, setCommentLoading, setCommentSuccess, setCommentError } = useSelector(state => state.post)
+    const {singlePostLoading, singlePostSuccess, setCommentLoading, setCommentSuccess, viewCommentModal} = useSelector(state => state.post)
     const [aspectRatio, setAspectRatio] = useState(1)
 
     const { postId } = useLocalSearchParams()
@@ -63,12 +68,26 @@ export default function SinglePost() {
         }
     }, [setCommentSuccess])
 
+    const [dimensions, setDimensions] = useState({
+        window: windowDimensions,
+        screen: screenDimensions,
+    });
+
+    useEffect(() => {
+        const subscription = Dimensions.addEventListener(
+          'change',
+          ({window, screen}) => {
+            setDimensions({window, screen});
+          },
+        );
+        return () => subscription?.remove();
+    });
 
     if(singlePostLoading || Object.keys(singlePostData).length === 0){
         return <ActivityIndicator style={{marginTop: 19}} />
     }else if(Object.keys(singlePostData).length > 0){
         return (
-            <MainModalContainer>
+            <MainPageContainer>
 
                 <TopSection>
                     <NameSection>
@@ -150,7 +169,28 @@ export default function SinglePost() {
                         <SinglePostComments postId={postId} /> 
                     )
                 }
-            </MainModalContainer>
+
+                <Modal
+                    propagateSwipe={true}
+                    animationIn={'slideInUp'}
+                    animationOut={'slideOutDown'}
+                    deviceWidth={dimensions.window.width}
+                    deviceHeight={(dimensions.window.height)*0.5} 
+                    isVisible={viewCommentModal}
+                    swipeDirection={'down'}
+                    onSwipeComplete={() => { 
+                        dispatch(setViewCommentModal({
+                            viewCommentModal: false,
+                            commentModalData: {}
+                        }));
+                    }}
+                    >
+                    <ItemModal 
+                        height={dimensions.window.height*0.5} 
+                        />
+                </Modal>
+
+            </MainPageContainer>
         )        
     }
 }
@@ -213,10 +253,10 @@ const PostType = styled.View`
 const CommentInput = styled.TextInput.attrs(props => ({
     placeholderTextColor: props.theme['mainFontColor']
   }))`
-    background-color: ${(props) => props.theme['postBgColor']};
+    
     max-width: 80%;
     width: 80%;
-    border-radius: 28px;
+    
     padding: 10px 15px;  
     color: ${(props) => props.theme['mainFontColor']};
 `
@@ -226,6 +266,7 @@ const InputWrap = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    border-radius: 20px;
     width: 100%;
-
+    background-color: ${(props) => props.theme['postBgColor']};
 `
