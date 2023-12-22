@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Header from '../../components/View/Header'
 import { baseUrl } from '../../assets/constants'
 import { StyledInput, MainPageContainer, ProfileImageWrap, ThemedCloseButton, ThemeButtonText, ContentText, ImageOriginalAspectRatio, ThemeButtonWIcon } from '../../styles/style'
-import { setViewSinglePost, setSinglePostComment, getSinglePost, setViewCommentModal } from '../../redux/features/postSlice'
+import { setViewSinglePost, getSinglePost } from '../../redux/features/postSlice'
+import { setComment, setViewCommentModal } from '../../redux/features/commentSlice'
 import { AntDesign, Feather } from '@expo/vector-icons'; 
 import styled from 'styled-components'
 import SinglePostComments from '../../components/Posts/SinglePost/SinglePostComments'
@@ -19,9 +20,10 @@ const screenDimensions = Dimensions.get('screen');
 export default function SinglePost() {
  
     const dispatch = useDispatch()
-    const [comment, setComment] = useState('') 
+    const [commentInput, setCommentInput] = useState('') 
     const { userData } = useSelector(state => state.users)
-    const {singlePostLoading, singlePostSuccess, setCommentLoading, setCommentSuccess, viewCommentModal} = useSelector(state => state.post)
+    const {singlePostLoading, singlePostSuccess, } = useSelector(state => state.post)
+    const { setCommentLoading, setCommentSuccess, viewCommentModal } = useSelector(state => state.comment)
     const [aspectRatio, setAspectRatio] = useState(1)
 
     const { postId } = useLocalSearchParams()
@@ -52,19 +54,21 @@ export default function SinglePost() {
     }, [])
 
     const handleSetComment = () => {
-        if(!comment) return alert('Please enter a comment')
+        if(!commentInput) return alert('Please enter a comment')
 
-        dispatch(setSinglePostComment({
+        dispatch(setComment({
+            url: 'https://api.praysely.com/api/singlePost/setComment',
             token: userData.token,
             postId: postId,
-            comment: comment,
-            residingId: userData.memberOf[0]
+            comment: commentInput,
+            residingId: userData.memberOf[0],
+            commentType: 'post'
         }))
     }
 
     useEffect(() => {
         if(setCommentSuccess){
-            setComment('')
+            setCommentInput('')
         }
     }, [setCommentSuccess])
 
@@ -131,9 +135,9 @@ export default function SinglePost() {
                     !singlePostData.commentsDisabled && (
                         <InputWrap>
                             <CommentInput 
-                                placeholder="Enter a comment"
-                                onChangeText={setComment}
-                                value={comment} 
+                                placeholder="Add a comment"
+                                onChangeText={setCommentInput}
+                                value={commentInput} 
                                 />       
                             <ThemeButtonWIcon
                                 onPress={handleSetComment}
@@ -175,7 +179,7 @@ export default function SinglePost() {
                     animationIn={'slideInUp'}
                     animationOut={'slideOutDown'}
                     deviceWidth={dimensions.window.width}
-                    deviceHeight={(dimensions.window.height)*0.5} 
+                    deviceHeight={(dimensions.window.height)} 
                     isVisible={viewCommentModal}
                     swipeDirection={'down'}
                     onSwipeComplete={() => { 
@@ -186,7 +190,7 @@ export default function SinglePost() {
                     }}
                     >
                     <ItemModal 
-                        height={dimensions.window.height*0.5} 
+                        height={dimensions.window.height*.5} 
                         />
                 </Modal>
 

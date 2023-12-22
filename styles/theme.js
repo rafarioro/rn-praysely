@@ -10,6 +10,7 @@ const darkTheme = {
     btnBgColor: '#A9A9A9', 
     postBgColor: '#292929',
     borderColor: '#505050b1',
+    inputBgColor: '#494949',
 };
 const lightTheme = {
     mainBg: '#eeeeee',
@@ -23,6 +24,7 @@ const lightTheme = {
     btnBgColor: '#E3F4F4',
     borderColor: '#bdbdbdae',
     postBgColor: '#fff', 
+    inputBgColor: '#fff',
 };
 export { lightTheme, darkTheme };
 

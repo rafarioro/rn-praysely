@@ -161,42 +161,43 @@ export const getSinglePost = createAsyncThunk('posts/getSinglePost', async (data
                 state.likePostLoadingId = '';
                 state.likePostErrorMessage = action.error.message;
             })
-            // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            .addCase(getPostComments.pending, (state, action) => {
-                state.getCommentsLoading = true;
-                state.getCommentsSuccess = false;
-                state.getCommentsError = false;
-            })
-            .addCase(getPostComments.fulfilled, (state, action) => {
-                state.getCommentsLoading = false;
-                state.getCommentsSuccess = true; 
-                state.comments = action.payload.docs
+            // // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            //  moved to commentSlice
+            // .addCase(getPostComments.pending, (state, action) => {
+            //     state.getCommentsLoading = true;
+            //     state.getCommentsSuccess = false;
+            //     state.getCommentsError = false;
+            // })
+            // .addCase(getPostComments.fulfilled, (state, action) => {
+            //     state.getCommentsLoading = false;
+            //     state.getCommentsSuccess = true; 
+            //     state.comments = action.payload.docs
  
                 
-                console.log(action.payload.docs.length)
-            })
-            .addCase(getPostComments.rejected, (state, action) => {
-                state.getCommentsLoading = false;
-                state.getCommentsError = true;
-                state.errorMessage = action.error.message;
-            })
-            // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            .addCase(setSinglePostComment.pending, (state, action) => {
-                state.setCommentLoading = true;
-                state.setCommentSuccess = false;
-                state.setCommentError = false;
-            })
-            .addCase(setSinglePostComment.fulfilled, (state, action) => {
-                state.setCommentLoading = false;
-                state.setCommentSuccess = true; 
-                state.comments.unshift(action.payload)
-            })
-            .addCase(setSinglePostComment.rejected, (state, action) => {
-                state.setCommentLoading = false;
-                state.setCommentError = true;
-                state.errorMessage = action.error.message;
-            }) 
-            // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            //     console.log(action.payload.docs.length)
+            // })
+            // .addCase(getPostComments.rejected, (state, action) => {
+            //     state.getCommentsLoading = false;
+            //     state.getCommentsError = true;
+            //     state.errorMessage = action.error.message;
+            // })
+            // // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            // .addCase(setSinglePostComment.pending, (state, action) => {
+            //     state.setCommentLoading = true;
+            //     state.setCommentSuccess = false;
+            //     state.setCommentError = false;
+            // })
+            // .addCase(setSinglePostComment.fulfilled, (state, action) => {
+            //     state.setCommentLoading = false;
+            //     state.setCommentSuccess = true; 
+            //     state.comments.unshift(action.payload)
+            // })
+            // .addCase(setSinglePostComment.rejected, (state, action) => {
+            //     state.setCommentLoading = false;
+            //     state.setCommentError = true;
+            //     state.errorMessage = action.error.message;
+            // }) 
+            // // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             .addCase(getSinglePost.pending, (state, action) => {
                 state.singlePostLoading = true;
                 state.singlePostSuccess = false;

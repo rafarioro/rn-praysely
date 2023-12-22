@@ -48,7 +48,9 @@ export const ItemModalContainer = styled.ScrollView`
     border-radius: 10px 10px 10px 10px;
     padding: 10px;
     position: relative;
-    height: ${(props) => props.height + 'px'};
+    /* max-height: ${(props) => props.height + 'px'}; */
+    flex-basis: auto;
+    height: auto;
 `;
 
 export const MainPageContainer = styled.ScrollView`

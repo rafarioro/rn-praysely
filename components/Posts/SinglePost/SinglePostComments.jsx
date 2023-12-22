@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components/native'
 import { useSelector, useDispatch } from 'react-redux'
 import { ContentText, ThemeButtonText } from '../../../styles/style'
-import { getPostComments } from '../../../redux/features/postSlice' 
+import { getComments } from '../../../redux/features/commentSlice' 
 import { CommentItemContainer, CommentProfileImage, CommentItemContent, CommentItemInfo, CommentItemDots } from '../../../styles/comments'
 import { baseUrl } from '../../../assets/constants'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -14,16 +14,16 @@ export default function SinglePostComments({postId}) {
 
     const dispatch = useDispatch()
     const { userData } = useSelector(state => state.users)
-    const { comments, getCommentsLoading, getCommentsSuccess, getCommentsError } = useSelector(state => state.post)
+    const { comments, getCommentsLoading, getCommentsSuccess, getCommentsError } = useSelector(state => state.comment)
 
 
     useEffect(() => {
- 
-
-        dispatch(getPostComments({
+        dispatch(getComments({
+            url: 'https://api.praysely.com/api/singlePost/getComments',
             token: userData.token,
             postId: postId
         }))
+
     }, [postId])
 
     if(getCommentsLoading){

@@ -1,6 +1,7 @@
 import userSlice from '../features/auth/userSlice';
 import appSlice from '../features/app/appSlice';
 import postSlice from '../features/postSlice';
+import commentSlice from '../features/commentSlice';
 import {configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {combineReducers} from "redux";
@@ -10,13 +11,14 @@ const reducers = combineReducers({
   app: appSlice,
   users: userSlice,
   post: postSlice,
+  comment: commentSlice
 });
 
 
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    blacklist: ['post']
+    blacklist: ['post', 'comment']
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
